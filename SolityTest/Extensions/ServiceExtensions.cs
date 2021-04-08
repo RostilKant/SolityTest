@@ -1,4 +1,9 @@
+using Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Repository;
+using Repository.Contracts;
 
 namespace SolityTest.Extensions
 {
@@ -13,5 +18,14 @@ namespace SolityTest.Extensions
                         .AllowAnyHeader()
                 );
             });
+
+        public static void ConfigureSqlContext(this IServiceCollection services, 
+            IConfiguration configuration) =>
+            services.AddDbContext<ApplicationContext>(options => 
+                options.UseNpgsql(configuration.GetConnectionString("SQLConnection"), 
+                    builder => builder.MigrationsAssembly("SolityTest")));
+
+        public static void ConfigureRepositoryManager(this IServiceCollection services)
+            => services.AddScoped<IRepositoryManager, RepositoryManager>();
     }
 }
