@@ -23,15 +23,47 @@ namespace Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ProjectDto>> GetManyAsync()
+        public async Task<IEnumerable<ProjectDto>> GetManyAsync(Guid employeeId)
         {
-            var projects = await _repositoryManager.Project.GetAllProjectsAsync(false);
+            IEnumerable<Project> projects;
+
+            if (!employeeId.Equals(Guid.Empty))
+            {
+                if (!await EmployeeExists(employeeId)) return null;
+                projects = await _repositoryManager.Project.GetAllEmployeeProjectsAsync(employeeId, false);
+            }
+            else
+                projects = await _repositoryManager.Project.GetAllProjectsAsync(false);
+
             return _mapper.Map<IEnumerable<ProjectDto>>(projects);
         }
+        
 
-        public Task<Project> GetByIdAsync(string id)
+        public async Task<ProjectDto> GetByIdAsync(Guid employeeId, Guid id)
         {
-            throw new System.NotImplementedException();
+            Project project;
+
+            if (!employeeId.Equals(Guid.Empty))
+            {
+                if (!await EmployeeExists(employeeId)) return null;
+                project = await _repositoryManager.Project.GetEmployeeProjectAsync(employeeId, id, false);
+            }
+            else
+                project = await _repositoryManager.Project.GetProjectAsync(id, false);
+            
+            return _mapper.Map<ProjectDto>(project);
+        }
+
+        private async Task<bool> EmployeeExists(Guid employeeId)
+        {
+            var employee = await _repositoryManager.Employee.GetEmployeeAsync(employeeId, false);
+            if (employee == null)
+            {
+                _logger.LogInformation("Employee with id {EmployeeId} doesn't exist in the db", employeeId);
+                return false;
+            }
+
+            return true;
         }
     }
 }

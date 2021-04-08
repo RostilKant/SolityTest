@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 
 namespace SolityTest.Controllers
 {
-    [Route("api/projects")]
+    [Route("api")]
     [ApiController]
     public class ProjectsController : ControllerBase
     {
@@ -14,9 +15,17 @@ namespace SolityTest.Controllers
         {
             _projectService = projectService;
         }
-
-        [HttpGet]
+        
+        [HttpGet("projects")]
         public async Task<IActionResult> GetProjects() =>
-            Ok(await _projectService.GetManyAsync());
+            Ok(await _projectService.GetManyAsync(Guid.Empty));
+        
+        [HttpGet("projects/{id}")]
+        public async Task<IActionResult> GetProject(Guid id)
+        {
+            var project = await _projectService.GetByIdAsync(Guid.Empty, id);
+            return project == null ? NotFound() : Ok(project);
+        }
+        
     }
 }

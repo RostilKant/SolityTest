@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Schema;
@@ -20,5 +21,9 @@ namespace Repository
             await FindAll(trackChanges)
                 .OrderBy(x => x.FirstName)
                 .ToListAsync();
+
+        public async Task<Employee> GetEmployeeAsync(Guid id, bool trackChanges) =>
+            await FindByCondition(x => x.Id == id, trackChanges)
+                .SingleOrDefaultAsync();
     }
 }

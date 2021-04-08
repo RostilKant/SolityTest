@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Entities;
@@ -19,5 +20,19 @@ namespace Repository
             await FindAll(trackChanges)
                 .OrderBy(x => x.StartDate)
                 .ToListAsync();
+
+        public async Task<Project> GetProjectAsync(Guid id, bool trackChanges) =>
+            await FindByCondition(x => x.Id == id, false)
+                .SingleOrDefaultAsync();
+
+        public async Task<IEnumerable<Project>> GetAllEmployeeProjectsAsync(Guid employeeId, bool trackChanges) =>
+            await FindByCondition(x =>
+                    x.Employees.Select(y => y.Id).Contains(employeeId), false)
+                .ToListAsync();
+
+        public async Task<Project> GetEmployeeProjectAsync(Guid employeeId, Guid id, bool trackChanges) =>
+            await FindByCondition(x =>
+                    x.Employees.Select(y => y.Id).Contains(employeeId), false)
+                .SingleOrDefaultAsync(x => x.Id == id); 
     }
 }

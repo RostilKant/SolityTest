@@ -30,9 +30,10 @@ namespace Services
             return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
 
-        public Task<Employee> GetByIdAsync(string id)
+        public async Task<Employee> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var employee = await _repositoryManager.Employee.GetEmployeeAsync(id, false);
+            return _mapper.Map<Employee>(employee);
         }
     }
 }
