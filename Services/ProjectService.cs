@@ -25,16 +25,8 @@ namespace Services
 
         public async Task<IEnumerable<ProjectDto>> GetManyAsync()
         {
-            try
-            {
-                var projects = await _repositoryManager.Project.GetAllProjectsAsync(false);
-                return _mapper.Map<IEnumerable<ProjectDto>>(projects);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Something went wrong");
-                return null;
-            }
+            var projects = await _repositoryManager.Project.GetAllProjectsAsync(false);
+            return _mapper.Map<IEnumerable<ProjectDto>>(projects);
         }
 
         public Task<Project> GetByIdAsync(string id)

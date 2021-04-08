@@ -16,11 +16,7 @@ namespace SolityTest.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProjects()
-        {
-            var projects = await _projectService.GetManyAsync();
-
-            return projects == null ? StatusCode(500, "Internal Server Error") : Ok(projects);
-        }
+        public async Task<IActionResult> GetProjects() =>
+            Ok(await _projectService.GetManyAsync());
     }
 }

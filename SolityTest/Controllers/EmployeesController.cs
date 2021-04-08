@@ -16,11 +16,7 @@ namespace SolityTest.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetEmployees()
-        {
-            var employees = await _employeeService.GetManyAsync();
-
-            return employees == null ? StatusCode(500, "Internal Server Error") : Ok(employees);
-        }
+        public async Task<IActionResult> GetEmployees() =>
+            Ok(await _employeeService.GetManyAsync());
     }
 }
