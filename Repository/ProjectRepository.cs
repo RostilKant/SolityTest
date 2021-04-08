@@ -1,5 +1,9 @@
-﻿using Entities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Contracts;
 
 namespace Repository
@@ -10,5 +14,10 @@ namespace Repository
             : base(applicationContext)
         {
         }
+
+        public async Task<IEnumerable<Project>> GetAllProjectsAsync(bool trackChanges) =>
+            await FindAll(trackChanges)
+                .OrderBy(x => x.StartDate)
+                .ToListAsync();
     }
 }

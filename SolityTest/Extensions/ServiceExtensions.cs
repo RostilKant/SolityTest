@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
 using Repository.Contracts;
+using Services;
+using Services.Contracts;
 
 namespace SolityTest.Extensions
 {
@@ -27,5 +29,11 @@ namespace SolityTest.Extensions
 
         public static void ConfigureRepositoryManager(this IServiceCollection services)
             => services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+        public static void ConfigureServices(this IServiceCollection services)
+        {
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IProjectService, ProjectService>();
+        }
     }
 }
