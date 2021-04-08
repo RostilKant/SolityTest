@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.Extensions.Logging;
 using Repository.Contracts;
@@ -12,18 +14,21 @@ namespace Services
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly ILogger<ProjectService> _logger;
+        private readonly IMapper _mapper;
 
-        public ProjectService(IRepositoryManager repositoryManager, ILogger<ProjectService> logger)
+        public ProjectService(IRepositoryManager repositoryManager, ILogger<ProjectService> logger, IMapper mapper)
         {
             _repositoryManager = repositoryManager;
             _logger = logger;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Project>> GetManyAsync()
+        public async Task<IEnumerable<ProjectDto>> GetManyAsync()
         {
             try
             {
-                return await _repositoryManager.Project.GetAllProjectsAsync(false);
+                var projects = await _repositoryManager.Project.GetAllProjectsAsync(false);
+                return _mapper.Map<IEnumerable<ProjectDto>>(projects);
             }
             catch (Exception e)
             {

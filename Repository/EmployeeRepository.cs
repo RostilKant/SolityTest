@@ -18,7 +18,7 @@ namespace Repository
 
         public async Task<IEnumerable<Employee>> GetAllEmployees(bool trackChanges) =>
             await FindAll(trackChanges)
-                .OrderBy(x => x.LastName)
+                .OrderBy(x => x.FirstName)
                 .ToListAsync();
     }
 }
