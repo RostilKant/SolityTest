@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 
 namespace SolityTest.Controllers
 {
-    [Route("api")]
+    [Route("api/projects")]
     [ApiController]
     public class ProjectsController : ControllerBase
     {
@@ -16,16 +17,39 @@ namespace SolityTest.Controllers
             _projectService = projectService;
         }
         
-        [HttpGet("projects")]
+        [HttpGet]
         public async Task<IActionResult> GetProjects() =>
             Ok(await _projectService.GetManyAsync(Guid.Empty));
         
-        [HttpGet("projects/{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetProject(Guid id)
         {
             var project = await _projectService.GetByIdAsync(Guid.Empty, id);
             return project == null ? NotFound() : Ok(project);
         }
         
+        [HttpPost]
+        public async Task<IActionResult> PostProject([FromBody] ProjectForCreationDto projectForCreation)
+        {
+            if (projectForCreation == null)
+                return BadRequest("ProjectForCreationDto is null");
+            
+            var projectDto = await _projectService.CreateAsync(projectForCreation);
+            return CreatedAtAction("GetProject", new {id = projectDto.Id}, projectDto);
+        }
+        
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> DeleteProject(Guid id)
+        {
+            var project = await _projectService.DeleteAsync(id);
+            return project ? NoContent() : NotFound();
+        }
+        
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> UpdateProject(Guid id, [FromBody] ProjectForUpdateDto projectForUpdate)
+        {
+            var project = await _projectService.UpdateAsync(id, projectForUpdate);
+            return project ? NoContent() : NotFound();
+        }
     }
 }

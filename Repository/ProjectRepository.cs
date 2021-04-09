@@ -22,8 +22,11 @@ namespace Repository
                 .ToListAsync();
 
         public async Task<Project> GetProjectAsync(Guid id, bool trackChanges) =>
-            await FindByCondition(x => x.Id == id, false)
+            await FindByCondition(x => x.Id == id, trackChanges)
                 .SingleOrDefaultAsync();
+
+        public void CreateProject(Project project) => Create(project);
+        public void DeleteProject(Project project) => Delete(project);
 
         public async Task<IEnumerable<Project>> GetAllEmployeeProjectsAsync(Guid employeeId, bool trackChanges) =>
             await FindByCondition(x =>

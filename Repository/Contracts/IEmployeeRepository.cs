@@ -9,5 +9,7 @@ namespace Repository.Contracts
     {
         Task<IEnumerable<Employee>> GetAllEmployees(bool trackChanges);
         Task<Employee> GetEmployeeAsync(Guid id, bool trackChanges);
+        void CreateEmployee(Employee employee);
+        void DeleteEmployee(Employee employee);
     }
 }

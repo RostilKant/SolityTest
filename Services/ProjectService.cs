@@ -54,6 +54,35 @@ namespace Services
             return _mapper.Map<ProjectDto>(project);
         }
 
+        public async Task<ProjectDto> CreateAsync(ProjectForCreationDto projectForCreation)
+        {
+            var project = _mapper.Map<Project>(projectForCreation);
+            
+            _repositoryManager.Project.CreateProject(project);
+            await _repositoryManager.SaveAsync();
+
+            return _mapper.Map<ProjectDto>(project);
+        }
+
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            var project = await _repositoryManager.Project.GetProjectAsync(id, false);
+            
+            _repositoryManager.Project.DeleteProject(project);
+            await _repositoryManager.SaveAsync();
+            
+            return project != null;
+        }
+
+        public async Task<bool> UpdateAsync(Guid id, ProjectForUpdateDto projectForUpdate)
+        {
+            var project = await _repositoryManager.Project.GetProjectAsync(id, true);
+            _mapper.Map(projectForUpdate, project);
+            await _repositoryManager.SaveAsync();
+            
+            return project != null;
+        }
+
         private async Task<bool> EmployeeExists(Guid employeeId)
         {
             var employee = await _repositoryManager.Employee.GetEmployeeAsync(employeeId, false);

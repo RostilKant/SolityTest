@@ -30,10 +30,39 @@ namespace Services
             return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
 
-        public async Task<Employee> GetByIdAsync(Guid id)
+        public async Task<EmployeeDto> GetByIdAsync(Guid id)
         {
             var employee = await _repositoryManager.Employee.GetEmployeeAsync(id, false);
-            return _mapper.Map<Employee>(employee);
+            return _mapper.Map<EmployeeDto>(employee);
+        }
+
+        public async Task<EmployeeDto> CreateAsync(EmployeeForCreationDto employeeForCreation)
+        {
+            var employee = _mapper.Map<Employee>(employeeForCreation);
+            
+            _repositoryManager.Employee.CreateEmployee(employee);
+            await _repositoryManager.SaveAsync();
+
+            return _mapper.Map<EmployeeDto>(employee);
+        }
+
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            var employee = await _repositoryManager.Employee.GetEmployeeAsync(id, false);
+            
+            _repositoryManager.Employee.DeleteEmployee(employee);
+            await _repositoryManager.SaveAsync();
+            
+            return employee != null;
+        }
+
+        public async Task<bool> UpdateAsync(Guid id, EmployeeForUpdateDto employeeForUpdate)
+        {
+            var employee = await _repositoryManager.Employee.GetEmployeeAsync(id, true);
+            _mapper.Map(employeeForUpdate, employee);
+            await _repositoryManager.SaveAsync();
+            
+            return employee != null;
         }
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Entities.DataTransferObjects
 {
-    public class EmployeeDto
+    public class EmployeeForUpdateDto
     {
-        public Guid Id { get; set; }
-        public string FullName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Job { get; set; }
         public DateTime EmploymentDate { get; set; }
     }

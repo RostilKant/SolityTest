@@ -9,6 +9,8 @@ namespace Repository.Contracts
     {
         Task<IEnumerable<Project>> GetAllProjectsAsync(bool trackChanges);
         Task<Project> GetProjectAsync(Guid id, bool trackChanges);
+        void CreateProject(Project project);
+        void DeleteProject(Project project);
 
         Task<IEnumerable<Project>> GetAllEmployeeProjectsAsync(Guid employeeId, bool trackChanges);
         Task<Project> GetEmployeeProjectAsync(Guid employeeId, Guid id, bool trackChanges);
