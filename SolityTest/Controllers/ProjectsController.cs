@@ -51,5 +51,13 @@ namespace SolityTest.Controllers
             var project = await _projectService.UpdateAsync(id, projectForUpdate);
             return project ? NoContent() : NotFound();
         }
+        
+        [HttpGet("{id:guid}/daysLeft")]
+        public async Task<IActionResult> GetDaysLeftToRelease(Guid id)
+        {
+            var project = await _projectService.GetDaysLeftToReleaseAsync(id);
+            return project == 0 ? NotFound() : Ok(project);
+        }
+
     }
 }

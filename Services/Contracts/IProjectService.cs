@@ -13,5 +13,7 @@ namespace Services.Contracts
         public Task<ProjectDto> CreateAsync(ProjectForCreationDto projectForCreation);
         public Task<bool> DeleteAsync(Guid id);
         public Task<bool> UpdateAsync(Guid id, ProjectForUpdateDto projectForUpdate);
+
+        public Task<int> GetDaysLeftToReleaseAsync(Guid id);
     }
 }

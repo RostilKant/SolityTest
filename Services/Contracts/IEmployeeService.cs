@@ -14,5 +14,7 @@ namespace Services.Contracts
         public Task<bool> DeleteAsync(Guid id);
         public Task<bool> UpdateAsync(Guid id, EmployeeForUpdateDto employeeForUpdate);
 
+        public Task<IEnumerable<ProjectDto>> GetProjectsAsync(Guid id);
+        public Task<bool> ManipulateProjectAsync(Guid id, ProjectAssignManipulationDto projectAssignManipulationDto);
     }
 }

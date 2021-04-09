@@ -83,6 +83,13 @@ namespace Services
             return project != null;
         }
 
+        public async Task<int> GetDaysLeftToReleaseAsync(Guid id)
+        {
+            var project = await _repositoryManager.Project.GetProjectAsync(id, false);
+            
+            return (project.ReleaseDate - project.StartDate).Days;
+        }
+        
         private async Task<bool> EmployeeExists(Guid employeeId)
         {
             var employee = await _repositoryManager.Employee.GetEmployeeAsync(employeeId, false);

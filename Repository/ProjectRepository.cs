@@ -23,6 +23,7 @@ namespace Repository
 
         public async Task<Project> GetProjectAsync(Guid id, bool trackChanges) =>
             await FindByCondition(x => x.Id == id, trackChanges)
+                .Include(x => x.Employees)
                 .SingleOrDefaultAsync();
 
         public void CreateProject(Project project) => Create(project);
