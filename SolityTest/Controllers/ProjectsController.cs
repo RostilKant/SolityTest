@@ -34,6 +34,9 @@ namespace SolityTest.Controllers
             if (projectForCreation == null)
                 return BadRequest("ProjectForCreationDto is null");
             
+            if(!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+            
             var projectDto = await _projectService.CreateAsync(projectForCreation);
             return CreatedAtAction("GetProject", new {id = projectDto.Id}, projectDto);
         }
@@ -48,6 +51,9 @@ namespace SolityTest.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateProject(Guid id, [FromBody] ProjectForUpdateDto projectForUpdate)
         {
+            if(!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+            
             var project = await _projectService.UpdateAsync(id, projectForUpdate);
             return project ? NoContent() : NotFound();
         }

@@ -35,6 +35,9 @@ namespace SolityTest.Controllers
             if (employeeForCreation == null)
                 return BadRequest("EmployeeForCreationDto is null");
             
+            if(!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+            
             var employeeDto = await _employeeService.CreateAsync(employeeForCreation);
             return CreatedAtAction("GetEmployee", new {id = employeeDto.Id}, employeeDto);
         }
@@ -49,6 +52,9 @@ namespace SolityTest.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateEmployee(Guid id, [FromBody] EmployeeForUpdateDto employeeForUpdate)
         {
+            if(!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+            
             var employee = await _employeeService.UpdateAsync(id, employeeForUpdate);
             return employee ? NoContent() : NotFound();
         }
@@ -61,6 +67,9 @@ namespace SolityTest.Controllers
         [HttpPost("{id:guid}/projects/assign")]
         public async Task<IActionResult> AssignEmployeeProject(Guid id, [FromBody] ProjectAssignManipulationDto projectAssignManipulationDto)
         {
+            if(!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+            
             projectAssignManipulationDto.AssignType = AssignType.Adding;
             var result = await _employeeService.ManipulateProjectAsync(id, projectAssignManipulationDto);
             
@@ -70,6 +79,9 @@ namespace SolityTest.Controllers
         [HttpPost("{id:guid}/projects/unassign")]
         public async Task<IActionResult> UnAssignEmployeeProject(Guid id, [FromBody] ProjectAssignManipulationDto projectAssignManipulationDto)
         {
+            if(!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+            
             projectAssignManipulationDto.AssignType = AssignType.Removing;
             var result = await _employeeService.ManipulateProjectAsync(id, projectAssignManipulationDto);
             

@@ -1,11 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Entities.DataTransferObjects
 {
-    public class ProjectForUpdateDto
+    public class ProjectForUpdateDto : ProjectForManipulationDto
     {
-        public string Title { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime ReleaseDate { get; set; }
     }
 }

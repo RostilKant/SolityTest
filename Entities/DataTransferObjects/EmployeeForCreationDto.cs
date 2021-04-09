@@ -1,12 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Entities.DataTransferObjects
 {
-    public class EmployeeForCreationDto
+    public class EmployeeForCreationDto : EmployeeForManipulationDto
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Job { get; set; }
-        public DateTime EmploymentDate { get; set; }
     }
 }
